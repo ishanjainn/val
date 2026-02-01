@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "For Dubby 💜",
+  title: "Hinge | Smrity Dubey",
   description: "A special question for someone special",
 };
 

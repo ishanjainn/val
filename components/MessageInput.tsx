@@ -7,8 +7,8 @@ interface MessageInputProps {
 
 export default function MessageInput({ placeholder = "Send a message", onSend }: MessageInputProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white px-4 py-3 border-t border-gray-100">
-      <div className="max-w-lg mx-auto flex items-center gap-3">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white px-4 py-3 border-t border-gray-100">
+      <div className="flex items-center gap-3">
         {/* Text input */}
         <div className="flex-1 bg-gray-100 rounded-full px-4 py-3">
           <input
