@@ -59,26 +59,43 @@ export default function ChatView({ isActive }: ChatViewProps) {
       
       const timers: NodeJS.Timeout[] = [];
       
-      // Reveal messages with 2.5 second intervals
-      phase1Messages.forEach((msg, index) => {
+      // First message (photo) - show typing then message
+      const firstTypingTimer = setTimeout(() => {
+        setIsTyping(true);
+        setCurrentTypingId(0);
+      }, 500);
+      timers.push(firstTypingTimer);
+      
+      const firstMessageTimer = setTimeout(() => {
+        setIsTyping(false);
+        setCurrentTypingId(null);
+        setVisibleMessages(prev => [...prev, 0]);
+      }, 1800);
+      timers.push(firstMessageTimer);
+      
+      // Wait 3.5 seconds after first message, then continue with rest
+      const baseDelay = 1800 + 3500; // First message appears at 1800ms, then wait 3500ms
+      
+      // Reveal remaining messages with 2.5 second intervals
+      phase1Messages.slice(1).forEach((msg, index) => {
         const typingTimer = setTimeout(() => {
           setIsTyping(true);
           setCurrentTypingId(msg.id);
-        }, index * 2500 + 500);
+        }, baseDelay + index * 2500 + 500);
         timers.push(typingTimer);
         
         const messageTimer = setTimeout(() => {
           setIsTyping(false);
           setCurrentTypingId(null);
           setVisibleMessages(prev => [...prev, msg.id]);
-        }, index * 2500 + 1800);
+        }, baseDelay + index * 2500 + 1800);
         timers.push(messageTimer);
       });
 
       // After all phase1 messages, move to timeline1
       const phaseTimer = setTimeout(() => {
         setPhase("timeline1");
-      }, phase1Messages.length * 2500 + 2000);
+      }, baseDelay + (phase1Messages.length - 1) * 2500 + 2000);
       timers.push(phaseTimer);
 
       return () => timers.forEach(t => clearTimeout(t));
@@ -298,9 +315,9 @@ setTimeout(() => {
           onClick={onClick}
           animate={{ y: [0, 5, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="mt-8 text-gray-400 text-sm px-6 py-3 rounded-full bg-white/90 active:bg-gray-200 z-10 shadow-sm"
+          className="mt-8 text-white text-sm px-6 py-3 rounded-full bg-[#6B4C7A] active:bg-[#5a3d68] z-10 shadow-sm"
         >
-          Tap to continue...
+          Scroll past some chats....
         </motion.button>
       )}
     </div>
@@ -430,7 +447,7 @@ setTimeout(() => {
                 </div>
                 <div className="bg-gray-100 text-gray-800 px-4 py-2.5 rounded-2xl min-w-[60px] min-h-[40px] flex items-center">
                   {typedText ? (
-                    <p className="text-[15px] font-semibold text-[#7C3AED]">{typedText}</p>
+                    <p className="text-[15px] text-gray-800">{typedText}</p>
                   ) : (
                     <div className="flex gap-1">
                       <motion.span animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1, repeat: Infinity, delay: 0 }} className="w-2 h-2 bg-gray-400 rounded-full" />
