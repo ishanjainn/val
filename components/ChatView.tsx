@@ -398,6 +398,9 @@ setTimeout(() => {
         {/* SECTION 2: Biryani message */}
         {showPhase2 && (
           <div className="px-4 py-2 space-y-4">
+            <div className="text-center py-2 mb-2">
+              <span className="text-xs text-gray-400">Fri, 5 Sep 8:30PM</span>
+            </div>
 
             {visibleMessages.includes(12) && renderMessage(phase2Message)}
 
