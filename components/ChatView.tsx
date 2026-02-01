@@ -20,7 +20,7 @@ const phase1Messages: Message[] = [
   { id: 1, text: "You got me curious now", isMe: false },
   { id: 2, text: "Just got a weird deja vu energy from this picture", isMe: true },
   { id: 3, text: "hahah like what?", isMe: false },
-  { id: 4, text: "We definitely dated in parallel universe", isMe: true },
+  { id: 4, text: "We definitely dated in previous life", isMe: true },
   { id: 5, text: "oh yeaa", isMe: false },
   { id: 6, text: "Did I kill you then?", isMe: false },
   { id: 7, text: "I swear", isMe: true },
@@ -330,7 +330,7 @@ setTimeout(() => {
   const showPhase3 = phase === "question" || phase === "typing" || phase === "done";
 
   return (
-    <div className="flex-1 flex flex-col bg-white overflow-hidden relative">
+    <div className="flex-1 flex flex-col bg-white overflow-hidden relative min-h-0">
       {/* Chat area - all content scrollable */}
       <div 
         ref={scrollRef} 

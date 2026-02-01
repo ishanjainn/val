@@ -24,7 +24,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<"chat" | "profile">("profile");
 
   return (
-    <main className="min-h-screen bg-[#FAFAFA] pb-24 flex flex-col">
+    <main className={`min-h-screen bg-[#FAFAFA] flex flex-col ${activeTab === "profile" ? "pb-24" : ""}`}>
       {/* Loading Screen */}
       <AnimatePresence>
         {isLoading && (
