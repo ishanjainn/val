@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FAF9F6;
+  --foreground: #171717;
+  --hinge-purple: #6B4EAA;
+  --hinge-purple-light: #8B6FCF;
+  --card-bg: #ffffff;
+  --prompt-gray: #6B7280;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-hinge-purple: var(--hinge-purple);
+  --color-hinge-purple-light: var(--hinge-purple-light);
+  --color-card-bg: var(--card-bg);
+  --color-prompt-gray: var(--prompt-gray);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Pulse animation for Yes button */
+@keyframes pulse-gentle {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(107, 78, 170, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 10px rgba(107, 78, 170, 0);
+  }
+}
+
+.pulse-gentle {
+  animation: pulse-gentle 2s ease-in-out infinite;
+}
+
+/* Heart float animation */
+@keyframes float-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(0.5);
+  }
+}
+
+.heart-float {
+  animation: float-up 1.5s ease-out forwards;
+}
+
+/* Typing indicator dots */
+@keyframes typing-dot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
+}
+
+.typing-dot:nth-child(1) { animation: typing-dot 1s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation: typing-dot 1s ease-in-out infinite 0.2s; }
+.typing-dot:nth-child(3) { animation: typing-dot 1s ease-in-out infinite 0.4s; }
+
+/* Hide scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
