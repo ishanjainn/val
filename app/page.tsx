@@ -46,7 +46,7 @@ export default function Home() {
 
           {/* Profile Info Box */}
           <ProfileInfoBox
-            age={28}
+            age={27}
             gender="Woman"
             sexuality="Straight"
             height="5'3&quot;"
@@ -60,8 +60,8 @@ export default function Home() {
 
           {/* Prompt 1 */}
           <MatchedPromptCard
-            label="We'll get along if"
-            answer="You can handle my chai addiction and spontaneous adventures"
+            label="What if I tell you"
+            answer="Im already in a toxic relationship with my manager"
           />
 
           {/* Photo 3 - Night event */}
@@ -69,8 +69,8 @@ export default function Home() {
 
           {/* Prompt 2 */}
           <MatchedPromptCard
-            label="My love language is"
-            answer="Quality time and making memories together"
+            label="I am a regular at"
+            answer="Taking naps"
           />
 
           {/* Photo 4 - Glasses */}
@@ -78,8 +78,8 @@ export default function Home() {
 
           {/* Prompt 3 */}
           <MatchedPromptCard
-            label="The way to win me over is"
-            answer="Good conversations, spontaneous plans, and never saying no to dessert"
+            label="We're the same type of weird if"
+            answer="If you like veg biryani"
           />
 
           {/* Video - loops automatically */}

@@ -28,6 +28,16 @@ body {
   min-height: 100dvh;
 }
 
+/* Hide scrollbar globally */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
 /* Pulse animation for Yes button */
 @keyframes pulse-gentle {
   0%, 100% {

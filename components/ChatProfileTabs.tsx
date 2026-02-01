@@ -7,7 +7,7 @@ interface ChatProfileTabsProps {
 
 export default function ChatProfileTabs({ activeTab, onTabChange }: ChatProfileTabsProps) {
   return (
-    <div className="flex bg-white border-b border-gray-100">
+    <div className="flex bg-white border-b border-gray-100 sticky top-[48px] z-40">
       <button
         onClick={() => onTabChange?.("chat")}
         className={`flex-1 py-3 text-center text-[15px] font-semibold ${

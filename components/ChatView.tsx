@@ -44,7 +44,7 @@ export default function ChatView({ isActive }: ChatViewProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
   const lastScrollTop = useRef(0);
 
-  // Reset when tab becomes active
+  // Reset when tab becomes active - reveal messages with 2.5s delay
   useEffect(() => {
     if (isActive) {
       setVisibleMessages([]);
@@ -53,28 +53,32 @@ export default function ChatView({ isActive }: ChatViewProps) {
       setPhase("chat1");
       setTypedText("");
       setShowKeyboard(true);
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = 0;
+      }
       
       const timers: NodeJS.Timeout[] = [];
       
+      // Reveal messages with 2.5 second intervals
       phase1Messages.forEach((msg, index) => {
         const typingTimer = setTimeout(() => {
           setIsTyping(true);
           setCurrentTypingId(msg.id);
-        }, index * 1800 + 400);
+        }, index * 2500 + 500);
         timers.push(typingTimer);
         
         const messageTimer = setTimeout(() => {
           setIsTyping(false);
           setCurrentTypingId(null);
           setVisibleMessages(prev => [...prev, msg.id]);
-        }, index * 1800 + 1400);
+        }, index * 2500 + 1800);
         timers.push(messageTimer);
       });
 
-      // Wait longer before showing timeline prompt
+      // After all phase1 messages, move to timeline1
       const phaseTimer = setTimeout(() => {
         setPhase("timeline1");
-      }, phase1Messages.length * 1800 + 3000);
+      }, phase1Messages.length * 2500 + 2000);
       timers.push(phaseTimer);
 
       return () => timers.forEach(t => clearTimeout(t));
@@ -115,9 +119,8 @@ setTimeout(() => {
     }, 1500);
   };
 
-  // Auto-scroll to bottom when new messages appear (but not for timeline phase transitions)
+  // Auto-scroll to bottom when new messages appear
   useEffect(() => {
-    // Don't auto-scroll when transitioning to timeline - let user scroll manually
     if (phase === "timeline1" || phase === "timeline2") return;
     
     if (bottomRef.current) {
@@ -125,40 +128,36 @@ setTimeout(() => {
     }
   }, [visibleMessages, isTyping, phase]);
 
-  // Handle scroll to hide/show keyboard
-  const checkKeyboardVisibility = () => {
+  // Handle scroll - keyboard visibility for typing phase
+  const handleScroll = () => {
     if (!scrollRef.current) return;
-    if (phase !== "typing" && phase !== "done") return;
     
     const currentScrollTop = scrollRef.current.scrollTop;
     const scrollHeight = scrollRef.current.scrollHeight;
     const clientHeight = scrollRef.current.clientHeight;
-    
-    // Calculate how far from the absolute bottom we are
     const maxScroll = scrollHeight - clientHeight;
     const distanceFromBottom = maxScroll - currentScrollTop;
     
-    // Hide keyboard if scrolled up more than 150px from bottom
-    if (distanceFromBottom > 150) {
-      setShowKeyboard(false);
-    } else {
-      setShowKeyboard(true);
+    // Keyboard visibility for typing phase
+    if (phase === "typing" || phase === "done") {
+      if (currentScrollTop < lastScrollTop.current || distanceFromBottom > 50) {
+        setShowKeyboard(false);
+      }
+      if (distanceFromBottom < 20) {
+        setShowKeyboard(true);
+      }
     }
     
     lastScrollTop.current = currentScrollTop;
   };
   
-  const handleScroll = () => {
-    checkKeyboardVisibility();
-  };
-  
   // Check keyboard visibility when phase changes to typing
   useEffect(() => {
     if (phase === "typing") {
-      // Small delay to let the DOM update
-      setTimeout(() => {
-        checkKeyboardVisibility();
-      }, 100);
+      setShowKeyboard(true);
+      if (scrollRef.current) {
+        lastScrollTop.current = scrollRef.current.scrollTop;
+      }
     }
   }, [phase]);
 
@@ -474,7 +473,7 @@ setTimeout(() => {
             animate={{ y: 0 }} 
             exit={{ y: 100 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-0 left-0 right-0 bg-[#D1D3D9] pt-2 pb-6 z-50"
+            className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-[#D1D3D9] pt-2 pb-6 z-50"
           >
           <div className="flex justify-center gap-[6px] mb-[6px] px-1">
             {["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"].map((key) => {

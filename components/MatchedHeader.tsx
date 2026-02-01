@@ -7,7 +7,7 @@ interface MatchedHeaderProps {
 
 export default function MatchedHeader({ name, hasRose = false }: MatchedHeaderProps) {
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white">
+    <div className="flex items-center justify-between px-4 py-3 bg-white sticky top-0 z-40 shadow-sm">
       {/* Left side - Back arrow and name */}
       <div className="flex items-center gap-3">
         {/* Back arrow */}
