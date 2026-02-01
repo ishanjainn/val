@@ -1,18 +1,61 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
 }
 
+// All images to preload
+const imagesToPreload = [
+  "/photos/photo1.png",
+  "/photos/photo2.png",
+  "/photos/photo3.png",
+  "/photos/photo4.png",
+  "/photos/photo5.png",
+];
+
 export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [minTimeElapsed, setMinTimeElapsed] = useState(false);
+
   useEffect(() => {
-    // Auto-complete loading after 2.5 seconds
-    const timer = setTimeout(onLoadingComplete, 2500);
+    // Preload all images
+    let loadedCount = 0;
+    const totalImages = imagesToPreload.length;
+
+    const checkAllLoaded = () => {
+      loadedCount++;
+      if (loadedCount >= totalImages) {
+        setImagesLoaded(true);
+      }
+    };
+
+    imagesToPreload.forEach((src) => {
+      const img = new Image();
+      img.onload = checkAllLoaded;
+      img.onerror = checkAllLoaded; // Count errors as loaded to prevent blocking
+      img.src = src;
+    });
+
+    // Preload video
+    const video = document.createElement("video");
+    video.preload = "auto";
+    video.src = "/videos/video.mp4";
+
+    // Minimum loading time of 2.5 seconds for the animation
+    const timer = setTimeout(() => setMinTimeElapsed(true), 2500);
+
     return () => clearTimeout(timer);
-  }, [onLoadingComplete]);
+  }, []);
+
+  // Complete loading when both conditions are met
+  useEffect(() => {
+    if (imagesLoaded && minTimeElapsed) {
+      onLoadingComplete();
+    }
+  }, [imagesLoaded, minTimeElapsed, onLoadingComplete]);
 
   return (
     <motion.div
